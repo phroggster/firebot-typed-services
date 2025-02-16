@@ -95,7 +95,7 @@ export interface AdBreakService {
     updateDuration(): void;
 }
 
-/** The BackendCommunicator, accessible via an auto-injected `backendCommunicator parameter.
+/** The BackendCommunicator, accessible via an auto-injected `backendCommunicator` parameter.
  * Defined in `Firebot/src/gui/app/services/backend-communicator.service.js`
  */
 export interface BackendCommunicator {
@@ -141,6 +141,9 @@ export interface BackendCommunicator {
     send<TData = unknown>(eventName: string, data?: TData): void;
 }
 
+/** The BackupService, accessible via an auto-injected `backupService` parameter.
+ * Defined in `Firebot/src/gui/app/services/backup.service.js`
+ */
 export interface BackupService {
     /** The path to the Firebot backups folder on-disk. */
     readonly backupFolderPath: string;
@@ -182,6 +185,32 @@ export interface BackupService {
     startBackup(): void;
 }
 
+/** The channelRewardsService, accessible via an auto-injected `channelRewardsService` parameter.
+ * Defined in `Firebot/src/gui/app/services/channel-rewards.service.js`
+*/
+export interface ChannelRewardsService {
+    /** Deletes the channel point reward with the given id, and removes the reward from Twitch.
+     * @param channelRewardId The unique identifier of the channel point reward to delete.
+    */
+    deleteChannelReward(channelRewardId: string): void;
+    /** Loads the service's view of channel rewards.  */
+    loadChannelRewards(): void;
+    /** Saves a channel reward.
+     * @param channelReward The channel reward data to persist.
+     * @returns `true` if the channel reward was successfully saved; `false` otherwise.
+     */
+    saveChannelReward(channelReward: unknown): Promise<boolean>;
+    /** Stores all of the provided channel rewards, optionally pushing the changes up to Twitch.
+     * @param channelRewards An array of SavedChannelReward objects.
+     * @param updateTwitch (default `false`) Whether to push the new rewards set up to Twitch.
+     */
+    saveAllRewards(channelRewards: unknown[], updateTwitch?: boolean): void;
+    /** Displays an add or edit channel point reward modal.
+     * @param reward (optional; `undefined` to add a new one) A SavedChannelReward
+     */
+    showAddOrEditRewardModal(reward?: unknown): void;
+}
+
 /** The NgToast service, accessible via an auto-injected `ngToast` parameter.
  * Defined in the external module `ng-toast`, injected by `src/gui/app/app-main.js`.
  */
@@ -197,7 +226,9 @@ export interface NgToast {
     }): void;
 }
 
-/** The Utility service, accessible via an auto-injected `utility` parameter. */
+/** The Utility service, accessible via an auto-injected `utilityService` parameter.
+ * Defined in `Firebot/gui/app/services/utility.service.js`
+ */
 export interface Utility {
     /** Displays a modal UI element. */
     showModal<T extends Record<string, unknown> = Record<string, unknown>>(showModalContext:
