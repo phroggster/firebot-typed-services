@@ -1,0 +1,22 @@
+{
+  "name": "@phroggie/firebot-typed-services",
+  "private": true,
+  "version": "0.0.1",
+  "description": "phroggie's unofficial type definitions and documentation for a variety of Firebot application services.",
+  "license": "GPL-3.0-or-later",
+  "author": "phroggie (https://github.com/phroggster/firebot-typed-services)",
+  "homepage": "https://github.com/phroggster/firebot-typed-services",
+  "repository": "github:phroggster/firebot-typed-services",
+  "bugs": {
+    "url": "https://github.com/phroggster/firebot-typed-services/issues"
+  },
+  "main": "",
+  "types": "types/index.d.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "volta": {
+    "node": "20.14.0",
+    "npm": "10.9.2"
+  }
+}
