@@ -10,9 +10,10 @@ This project is my personal attempt to document the typings of [Firebot](https:/
     - Utilize it:
 ```ts
 // ... this is an excerpt ... In the real world, there would be a lot of other stuff above and below this.
-optionsController: (ngToast: NgToast) => {
-    // Note that the ngToast instance is now fully typed, and is fully commented with JSDoc
-    ngToast.create({className: "success", content: "Hello world from phroggie's Firebot Typed Services!", timeout: 10 * 1000});
-    return true;
+optionsController: ($scope: any, ngToast: NgToast) => {
+    $scope.showToast = () => {
+        // Note that the ngToast instance is now fully typed, and is fully commented with JSDoc
+        ngToast.create({className: "success", content: "Hello world from phroggie's Firebot Typed Services!", timeout: 10 * 1000});
+    };
 }
 ```

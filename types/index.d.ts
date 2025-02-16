@@ -185,45 +185,69 @@ export interface BackupService {
     startBackup(): void;
 }
 
-/** The channelRewardsService, accessible via an auto-injected `channelRewardsService` parameter.
+/** The ChannelRewardsService, accessible via an auto-injected `channelRewardsService` parameter.
  * Defined in `Firebot/src/gui/app/services/channel-rewards.service.js`
 */
 export interface ChannelRewardsService {
+    /** The currently-loaded channel point rewards. These may not necessarily correlate with the rewards listed on Twitch. */
+    readonly channelRewards: ReadonlyArray<unknown>;
+
     /** Deletes the channel point reward with the given id, and removes the reward from Twitch.
      * @param channelRewardId The unique identifier of the channel point reward to delete.
     */
     deleteChannelReward(channelRewardId: string): void;
-    /** Loads the service's view of channel rewards.  */
+    /** Loads the service's view of channel rewards. */
     loadChannelRewards(): void;
     /** Saves a channel reward.
-     * @param channelReward The channel reward data to persist.
+     * @param channelReward The channel reward data to persist. Not quite a SavedChannelReward, but almost.
      * @returns `true` if the channel reward was successfully saved; `false` otherwise.
      */
     saveChannelReward(channelReward: unknown): Promise<boolean>;
-    /** Stores all of the provided channel rewards, optionally pushing the changes up to Twitch.
+    /** Stores all of the provided array of channel point rewards, optionally pushing the changes up to Twitch.
      * @param channelRewards An array of SavedChannelReward objects.
      * @param updateTwitch (default `false`) Whether to push the new rewards set up to Twitch.
      */
     saveAllRewards(channelRewards: unknown[], updateTwitch?: boolean): void;
     /** Displays an add or edit channel point reward modal.
-     * @param reward (optional; `undefined` to add a new one) A SavedChannelReward
+     * @param reward (optional; `undefined` to add a new one) A SavedChannelReward to edit.
      */
     showAddOrEditRewardModal(reward?: unknown): void;
 }
 
+interface ToastData {
+    /** The HTML or raw text to display on the toast. */
+    content: string;
+
+    /** (Optional; default "") Additional classnames to append to the toast. */
+    additionalClasses?: string;
+    /** (Optional; default "") Built-in animation type for toast messages. */
+    animation?: "slide" | "fade" | "";
+    /** (Optional; default: "success") An ngToast/Bootstrap-css class name to use for the toast. */
+    className?: "danger" | "info" | "success" | "warning";
+    /** (Optional; default false) Whether to add a close button to the toast. */
+    dismissButton?: boolean;
+    /** (Optional; default "&times;") HTML of the close button to append. */
+    dismissButtonHtml?: string;
+    /** (Optional; default true) Allows toast messages to be removed on mouse click. */
+    dismissOnClick?: boolean;
+    /** (Optional; default "right") Horizontal position of the toast message. */
+    horizontalPosition?: "center" | "left" | "right";
+    /** (Optional; default 4000) How long the toast should cook for, in milliseconds. */
+    timeout?: number;
+    /** (Optional; default "top") Vertical position of the toast message. */
+    verticalPosition?: "bottom" | "top";
+
+    /** (Optional) A callback that will be triggered whenever the toast message is dismissed. */
+    onDismiss?: (toastData: Omit<ToastData, "onDismiss">) => void;
+}
 /** The NgToast service, accessible via an auto-injected `ngToast` parameter.
  * Defined in the external module `ng-toast`, injected by `src/gui/app/app-main.js`.
  */
 export interface NgToast {
-    /** Creates some toast. Also available via `frontendCommunicator.send("showToast", toastData);` */
-    create(toastData:  string | {
-        /** An ngToast/Bootstrap-css class name to use for the toast. */
-        className: "danger" | "info" | "success" | "warning";
-        /** The HTML or raw text toppings to display on the toast. */
-        content: string;
-        /** How long the toast should cook for, in milliseconds. */
-        timeout?: number;
-    }): void;
+    /** Creates some toast. Also available via `frontendCommunicator.send("showToast", toastData);`
+     * @param toastData The message content (when string) or the ToastData to be displayed.
+    */
+    create(toastData: string | ToastData): void;
 }
 
 /** The Utility service, accessible via an auto-injected `utilityService` parameter.
